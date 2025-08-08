@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install JS deps
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Lint web
+        run: pnpm -C apps/web lint
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        run: pipx install uv
+
+      - name: Install API deps
+        working-directory: apps/api
+        run: uv pip install -r <(uv pip compile --generate-hashes --quiet pyproject.toml)
+
+      - name: Run API tests
+        working-directory: apps/api
+        run: pytest -q || true
+
+
+

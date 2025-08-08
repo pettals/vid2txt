@@ -1,0 +1,36 @@
+{
+  "name": "vid2txt",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.6",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "pnpm -w exec prettier --write",
+      "pnpm -w exec eslint --fix"
+    ],
+    "*.{json,md,css,scss}": [
+      "pnpm -w exec prettier --write"
+    ],
+    "apps/api/**/*.py": [
+      "ruff check --fix",
+      "black --fast",
+      "mypy apps/api/src"
+    ]
+  }
+}
+
+
+

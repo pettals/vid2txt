@@ -1,0 +1,14 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "python -m uvicorn src.app.main:app --reload --port 8000",
+    "build": "echo 'Nothing to build for Python API'",
+    "lint": "ruff check . && black --check . && mypy src",
+    "test": "pytest -q"
+  }
+}
+
+
+
